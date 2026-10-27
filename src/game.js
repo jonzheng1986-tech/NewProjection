@@ -1,16 +1,14 @@
 // Game shell: boot, loop, input, selection, orders, camera, audio wiring.
 
-import { generateMap, FLAG } from './sim/mapgen.js';
+import { generateMap } from './sim/mapgen.js';
 import { World } from './sim/world.js';
 import { AIController } from './ai/ai.js';
 import { GameRenderer } from './render/renderer.js';
 import { GameUI } from './ui/ui.js';
 import { AudioEngine } from './audio/audio.js';
-import {
-  TILE, clamp, dist, dist2, ISO_X, ISO_Y, pointInPoly, angleTo,
-} from './core/util.js';
+import { TILE, clamp, dist, pointInPoly } from './core/util.js';
 import { PAL } from './render/palette.js';
-import { BUILDINGS, UNITS, HEROES, ALL_DEFS } from './data/human.js';
+import { BUILDINGS } from './data/human.js';
 import { ABILITIES } from './data/abilities.js';
 import { ITEMS } from './data/items.js';
 
@@ -194,6 +192,11 @@ export class Game {
         }
         case 'death':
           this.audio.play('death', 0.8);
+          break;
+        case 'damage':
+          if (ev.owner === this.localPlayer && !this.ping) {
+            this.ping = { x: ev.x, y: ev.y, t: this.time };
+          }
           break;
         case 'buildingDeath':
           this.audio.play('cannon', 1);
@@ -393,7 +396,8 @@ export class Game {
       case 'b': if (this.canBuild()) this.buildMenu = true; break;
       case ' ':
         e.preventDefault();
-        this.centerOnBase();
+        if (this.ping && this.time - this.ping.t < 8) this.renderer.centerOn(this.ping.x, this.ping.y);
+        else this.centerOnBase();
         break;
       case 'Tab': {
         e.preventDefault();
@@ -892,13 +896,9 @@ export class Game {
       const tx = clamp(wx + o[0], 8, world.worldWidth - 8);
       const ty = clamp(wy + o[1], 8, world.worldHeight - 8);
       if (queued) {
-        // shift-queued move: append a simple move order (kept lightweight)
+        // shift-queued move: the latest waypoint wins (kept lightweight)
       }
-      if (u.def.canGather && u.carry && u.carry.amount > 0) {
-        world.orderMove(u, tx, ty);
-      } else {
-        world.orderMove(u, tx, ty);
-      }
+      world.orderMove(u, tx, ty);
     });
     this.audio.play('order');
     this.showOrderMarker(wx, wy, 'move');
@@ -973,7 +973,6 @@ export class Game {
       if (u.owner !== this.localPlayer) continue;
       if (u.kind === 'unit') {
         this.world.orderStop(u);
-        u.carry = u.carry;
       } else {
         u.trainQueue = [];
       }

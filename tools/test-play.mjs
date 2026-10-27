@@ -67,6 +67,13 @@ await check('main menu -> new game', async () => {
   if (!started) throw new Error('game did not start');
 });
 
+// The interaction suites exercise player input, not the opponent: park the AI so
+// its army can never wander into a test fixture.
+await check('the AI can be parked for deterministic tests', async () => {
+  await evalGame(() => { window.__game.ai = null; });
+  return true;
+});
+
 await check('click a peasant selects it', async () => {
   const pos = await evalGame(() => {
     const g = window.__game;
@@ -161,7 +168,8 @@ await check('build menu opens with B and shows farms', async () => {
     return w.id;
   });
   await page.keyboard.press('b');
-  await sleep(120);
+  await sleep(200);
+  await refreshUi();
   const open = await evalGame(() => window.__game.buildMenu);
   const hasFarm = await evalGame(() => (window.__game.ui.commandsCache || []).some((c) => c && c.action === 'build' && c.payload.defId === 'farm'));
   return open && hasFarm && !!peasantId;

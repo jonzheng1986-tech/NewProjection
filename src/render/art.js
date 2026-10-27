@@ -3,7 +3,7 @@
 // immediate-mode primitives of GLRenderer in screen space.
 
 import { PAL } from './palette.js';
-import { ISO_X, ISO_Y, TILE, clamp, hash01 } from '../core/util.js';
+import { ISO_X, ISO_Y, TILE, clamp } from '../core/util.js';
 import { ITEMS } from '../data/items.js';
 
 const TAU = Math.PI * 2;

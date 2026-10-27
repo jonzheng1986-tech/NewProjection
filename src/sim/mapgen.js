@@ -1,7 +1,7 @@
 // Procedural, rotationally symmetric melee map generation.
 // Terrain is a tile grid; blockers live in a flag grid used by pathfinding.
 
-import { makeRng, TILE, dist, clamp } from '../core/util.js';
+import { makeRng, TILE, dist } from '../core/util.js';
 import { CAMP_TEMPLATES } from '../data/creeps.js';
 
 export const TERRAIN = { GRASS: 0, DIRT: 1, ROCK: 2, WATER: 3, SNOW: 4 };

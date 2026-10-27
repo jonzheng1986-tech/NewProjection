@@ -50,7 +50,11 @@ const sim = (sec) => G((s) => { const g = window.__game; for (let i = 0; i < s *
 
 await G(() => window.__game.newGame(777));
 await sleep(500);
-await G(() => { window.__game.world.players[0].gold = 4000; window.__game.world.players[0].lumber = 3000; });
+await G(() => {
+  window.__game.ai = null;
+  window.__game.world.players[0].gold = 4000;
+  window.__game.world.players[0].lumber = 3000;
+});
 
 await check('fog hides the enemy base until scouted', async () => {
   return G(() => {

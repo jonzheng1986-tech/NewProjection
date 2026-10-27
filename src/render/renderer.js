@@ -1,15 +1,12 @@
 // Game renderer: isometric camera, entity draw order, fog texture, selection,
 // build ghosts and world-space effects. UI drawing lives in ../ui.
 
-import { ISO_X, ISO_Y, TILE, clamp, dist, TAU } from '../core/util.js';
+import { ISO_X, ISO_Y, TILE, clamp, TAU } from '../core/util.js';
 import { PAL } from './palette.js';
-import { GLRenderer, rgba } from '../gl/gl.js';
+import { GLRenderer } from '../gl/gl.js';
 import { buildTerrainMesh } from './terrain.js';
 import { FOG_VISIBLE, FOG_EXPLORED } from '../sim/fog.js';
-import {
-  drawUnit, drawBuilding, drawTree, drawItem, drawEffect, drawHealthBar,
-  drawFigure, drawIcon, groundEllipse, isoBox,
-} from './art.js';
+import { drawUnit, drawBuilding, drawTree, drawItem, drawHealthBar, drawFigure, drawIcon } from './art.js';
 
 export class GameRenderer {
   constructor(canvas) {

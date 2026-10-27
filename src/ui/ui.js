@@ -5,14 +5,14 @@
 // by the same WebGL2 pass as the game.
 
 import { PAL } from '../render/palette.js';
-import { drawIcon, drawFigure, groundEllipse } from '../render/art.js';
+import { drawIcon, drawFigure } from '../render/art.js';
 import { FONT_SANS, FONT_SERIF, FONT_MONO } from '../gl/font.js';
-import { T, panel, cornerTicks, label, title, commandButton, bar, tooltip, fmtCost, costShort, divider } from './theme.js';
-import { buildCommands, HOTKEYS, itemInfo, abilityInfo } from './commands.js';
+import { panel, cornerTicks, label, title, commandButton, bar, tooltip } from './theme.js';
+import { buildCommands, itemInfo, abilityInfo } from './commands.js';
 import { ITEMS } from '../data/items.js';
 import { ABILITIES } from '../data/abilities.js';
-import { UPGRADES, BUILDINGS, UNITS, ALL_DEFS, MAX_FOOD, upkeepFor, HERO_XP_TABLE } from '../data/human.js';
-import { clamp, fmtTime, fmtNum, dist, TAU } from '../core/util.js';
+import { UPGRADES, BUILDINGS, ALL_DEFS, upkeepFor, HERO_XP_TABLE } from '../data/human.js';
+import { clamp, fmtTime } from '../core/util.js';
 import { FOG_VISIBLE, FOG_EXPLORED } from '../sim/fog.js';
 import { TERRAIN } from '../sim/mapgen.js';
 
@@ -343,6 +343,16 @@ export class GameUI {
     for (const c of corners) {
       const [mx, my] = toMap(clamp(c.x, 0, world.worldWidth), clamp(c.y, 0, world.worldHeight));
       pts.push(mx, my);
+    }
+    // alert ping: a short-lived ring where the player is being attacked
+    const ping = this.game.ping;
+    if (ping && this.game.time - ping.t < 6) {
+      const age = this.game.time - ping.t;
+      const [mx, my] = toMap(ping.x, ping.y);
+      const r = 4 + age * 9;
+      const a = clamp(1 - age / 6, 0, 1);
+      gl.ring(mx, my, r, 1.2, [1, 1, 1, a * 0.9], 16);
+      gl.ring(mx, my, r * 0.5, 1, [1, 1, 1, a * 0.5], 12);
     }
     gl.polyline(pts, 1, PAL.white50, true, false);
     gl.strokeRect(x, y, w, h, 1, PAL.panelInk);

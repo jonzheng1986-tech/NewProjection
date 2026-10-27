@@ -3,16 +3,16 @@
 // the simulation can be run headlessly for balance testing.
 
 import {
-  TILE, dist, dist2, clamp, normalize, angleTo, angleDiff, approach,
-  circleOverlap, makeRng, armorMultiplier, forEachTileInCircle, newId,
+  TILE, dist, dist2, clamp, normalize, angleTo, angleDiff, approach, makeRng,
+  armorMultiplier, newId
 } from '../core/util.js';
-import { FLAG, TERRAIN } from './mapgen.js';
+import { FLAG } from './mapgen.js';
 import { Pathfinder } from './pathfinder.js';
-import { FogOfWar, FOG_VISIBLE } from './fog.js';
-import { UNITS, BUILDINGS, HEROES, UPGRADES, defOf, HERO_XP_TABLE, MAX_FOOD, upkeepFor, MAX_HERO_LEVEL } from '../data/human.js';
-import { CREEPS, CAMP_TEMPLATES } from '../data/creeps.js';
+import { FogOfWar } from './fog.js';
+import { UNITS, BUILDINGS, HEROES, UPGRADES, HERO_XP_TABLE, MAX_FOOD, upkeepFor, MAX_HERO_LEVEL } from '../data/human.js';
+import { CREEPS } from '../data/creeps.js';
 import { ABILITIES } from '../data/abilities.js';
-import { ITEMS, DROP_TABLES, SHOP_STOCK } from '../data/items.js';
+import { ITEMS, DROP_TABLES } from '../data/items.js';
 
 export const NEUTRAL_HOSTILE = -1;
 export const NEUTRAL_PASSIVE = -2;
@@ -1137,7 +1137,7 @@ export class World {
       target.lastDamagedBy = source.id;
       target.lastDamagedTime = this.time;
     }
-    this.events.push({ type: 'damage', x: target.x, y: target.y, amount, kind: damageType });
+    this.events.push({ type: 'damage', x: target.x, y: target.y, amount, kind: damageType, owner: target.owner, targetId: target.id });
     if (target.owner >= 0 && target.owner < this.players.length && target.isHero) {
       // nothing extra; hero death handled below
     }

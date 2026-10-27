@@ -2,9 +2,8 @@
 
 import { ABILITIES } from '../data/abilities.js';
 import { ITEMS } from '../data/items.js';
-import { UNITS, BUILDINGS, UPGRADES, ALL_DEFS } from '../data/human.js';
-import { defOf } from '../data/human.js';
-import { costShort, fmtCost } from './theme.js';
+import { BUILDINGS, UPGRADES, ALL_DEFS } from '../data/human.js';
+import { fmtCost } from './theme.js';
 
 export const HOTKEYS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'Z', 'X', 'C', 'V'];
 const UNIT_KEYS = ['M', 'A', 'S', 'H', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I'];
