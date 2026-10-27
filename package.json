@@ -1,0 +1,27 @@
+{
+  "name": "newprojection",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A WebGL2 2D RTS with a Warcraft III-style ruleset, drawn in monochrome line art.",
+  "scripts": {
+    "dev": "node tools/serve.mjs 5173",
+    "start": "node tools/serve.mjs 5173",
+    "test": "node tools/test-sim.mjs",
+    "test:render": "node tools/test-render.mjs",
+    "test:play": "node tools/test-play.mjs",
+    "test:systems": "node tools/test-systems.mjs",
+    "test:all": "node tools/test-sim.mjs && node tools/test-render.mjs",
+    "shots": "node tools/shot.mjs"
+  },
+  "keywords": [
+    "rts",
+    "webgl2",
+    "warcraft3"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@sparticuz/chromium": "^153.0.0",
+    "puppeteer-core": "^25.16.0"
+  }
+}
