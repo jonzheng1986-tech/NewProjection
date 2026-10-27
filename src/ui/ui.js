@@ -177,6 +177,8 @@ export class GameUI {
       bulk: hero.def.art.bulk,
       hero: true,
     });
+    // clicking the hero portrait selects the hero and brings it into view
+    this.addRegion({ kind: 'heroPortrait', heroId: hero.id, x: px, y: py, w: ps, h: ps });
     // level badge
     gl.rect(px, py + ps - 18, 26, 18, [0.06, 0.065, 0.075, 0.95]);
     gl.strokeRect(px, py + ps - 18, 26, 18, 1, PAL.panelInkBright);

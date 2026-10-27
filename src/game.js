@@ -559,6 +559,21 @@ export class Game {
         this.alert = { text: `${def ? def.name : 'Ability'} autocast ${st.enabled ? 'on' : 'off'}`, time: 1.4 };
         break;
       }
+      case 'heroPortrait': {
+        const hero = world.getEntity(region.heroId);
+        if (hero) {
+          this.selection = [hero];
+          this.syncSelection();
+          if (hero.dead) {
+            const revive = (world.players[this.localPlayer].heroRevive || []).find((r) => r.heroId === hero.id);
+            this.alert = { text: revive ? `${hero.name} revives in ${Math.ceil(revive.timeLeft)}s` : `${hero.name} is dead`, time: 2 };
+          } else {
+            this.renderer.centerOn(hero.x, hero.y);
+          }
+          this.audio.play('select');
+        }
+        break;
+      }
       case 'portrait':
         break;
       default: break;
